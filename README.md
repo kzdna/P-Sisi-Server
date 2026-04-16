@@ -34,3 +34,16 @@ Status log saat service `web` dan `db` berjalan secara paralel dan berstatus hea
 ### 5. Hasil Migrasi Database
 Bukti eksekusi perintah migrasi yang berhasil membentuk skema database di PostgreSQL.
 ![Migration Result](screenshots/Hasil%20Eksekusi%20Migrasi.png)
+
+## 🚀 Cara Menjalankan Project
+
+### 1. Persiapan Environment
+Salin file `.env.example` menjadi `.env` dan sesuaikan konfigurasinya:
+```bash
+cp .env.example .env
+
+Cara Run: docker-compose up -d
+
+Cara Load Data: docker exec -it lms_app python manage.py loaddata initial_data.json
+
+Cara Cek Optimasi: docker exec -it lms_app python demo_optimization.py

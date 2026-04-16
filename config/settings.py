@@ -19,8 +19,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # Tambahkan app buatanmu di bawah sini
+    # App Progress 2
+    'courses',
 ]
+
+# Wajib ditambahkan agar Django tahu kita pakai User custom dengan Role
+AUTH_USER_MODEL = 'courses.User'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -77,4 +81,6 @@ USE_I18N = True
 USE_TZ = True
 
 STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / "staticfiles"
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
