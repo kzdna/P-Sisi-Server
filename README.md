@@ -13,9 +13,24 @@ Project ini adalah tahap awal pengembangan Learning Management System (LMS) sede
 - [Docker Desktop](https://www.docker.com/get-started)
 - [Docker Compose](https://docs.docker.com/compose/install/)
 
-## 🚀 Cara Menjalankan Project
+## 📸 Dokumentasi Sistem
 
-### 1. Persiapan Environment
-Salin file `.env.example` menjadi `.env` dan sesuaikan konfigurasinya:
-```bash
-cp .env.example .env
+### 1. Django Welcome Page
+Halaman awal yang menandakan Django berhasil berjalan dengan sukses di dalam container Docker.
+![Welcome Page](screenshots/Django%20Welcome%20Page.png)
+
+### 2. Login Django Admin
+Halaman login menuju area administrasi sistem.
+![Login Page](screenshots/Login%20Django.png)
+
+### 3. Dashboard Admin
+Halaman dashboard admin sebagai bukti database PostgreSQL sudah terkoneksi dan tabel user berhasil dibuat.
+![Admin Dashboard](screenshots/Django%20Admin%20Dashboard.png)
+
+### 4. Log Terminal (Docker Compose)
+Status log saat service `web` dan `db` berjalan secara paralel dan berstatus healthy.
+![Docker Log](screenshots/Log%20Terminal(Docker%20compose).png)
+
+### 5. Hasil Migrasi Database
+Bukti eksekusi perintah migrasi yang berhasil membentuk skema database di PostgreSQL.
+![Migration Result](screenshots/Hasil%20Eksekusi%20Migrasi.png)
