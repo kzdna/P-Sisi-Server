@@ -1,9 +1,10 @@
 from django.db import models
 
 class CourseQuerySet(models.QuerySet):
-    def for_listing(self):
-        return self.select_related('instructor', 'category')
+    def public(self):
+        # Bisa ditambah filter (misal: is_published=True) di masa depan
+        return self.all()
 
 class EnrollmentQuerySet(models.QuerySet):
-    def for_student_dashboard(self):
-        return self.select_related('course').prefetch_related('lesson_progress')
+    def for_user(self, user):
+        return self.filter(user=user)
