@@ -17,20 +17,9 @@ Project ini adalah pengembangan Learning Management System (LMS) sederhana yang 
 
 ---
 
-## 🛠️ Persyaratan Sistem
-
-* [Docker Desktop](https://www.docker.com/get-started)
-* [Docker Compose](https://docs.docker.com/compose/install/)
-* Python 3.10+
-* pip
-
----
-
 ## 📸 Dokumentasi Sistem
 
 ### 1. Django Welcome Page & Admin
-
-Status awal Django dan dashboard admin sebagai bukti database PostgreSQL sudah terkoneksi.
 
 ![Welcome Page](screenshots/Django%20Welcome%20Page.png)
 ![Admin Dashboard](screenshots/Django%20Admin%20Dashboard.png)
@@ -39,8 +28,6 @@ Status awal Django dan dashboard admin sebagai bukti database PostgreSQL sudah t
 
 ### 2. Log Sistem & Migrasi
 
-Service berjalan dengan baik dan skema database berhasil terbentuk.
-
 ![Docker Log](screenshots/Log%20Terminal\(Docker%20compose\).png)
 ![Migration Result](screenshots/Hasil%20Eksekusi%20Migrasi.png)
 
@@ -48,24 +35,18 @@ Service berjalan dengan baik dan skema database berhasil terbentuk.
 
 ### 3. API Documentation (Swagger UI)
 
-Seluruh endpoint API terpetakan secara otomatis dan interaktif.
-
 ![Swagger UI](screenshots/Swagger_UI_accessible_api_docs.png)
 
 ---
 
 ### 4. Autentikasi & Authorization (JWT)
 
-Proses login untuk mendapatkan access token dan penggunaannya.
-
 ![API Login](screenshots/loginAPI.png)
 ![API Authorize](screenshots/LMS%20API%20Project.png)
 
 ---
 
-### 5. Hasil Eksekusi Endpoint (JSON Response)
-
-Endpoint `/api/courses/` berhasil mengambil data dari database dengan status **200 OK**.
+### 5. Hasil Endpoint (200 OK)
 
 ![GET Courses Success](screenshots/GET_Courses_200_OK.png)
 
@@ -73,9 +54,7 @@ Endpoint `/api/courses/` berhasil mengambil data dari database dengan status **2
 
 ### 6. Rate Limiting (Redis)
 
-Implementasi pembatasan request menggunakan Redis.
-
-Jika jumlah request melebihi batas (60 request/menit), sistem akan mengembalikan response:
+Jika request melebihi batas:
 
 ```json
 {
@@ -89,13 +68,11 @@ Status:
 429 Too Many Requests
 ```
 
-![Rate Limit 429](screenshots/60%20send.png)
+![Rate Limit](screenshots/60%20send.png)
 
 ---
 
 ### 7. MongoDB Activity Logging
-
-Setiap request API dicatat ke MongoDB untuk keperluan monitoring dan analisis.
 
 Contoh data log:
 
@@ -110,59 +87,66 @@ Contoh data log:
 
 ---
 
+## 🧪 Redis Caching Exercise
+
+Implementasi caching sederhana menggunakan Redis untuk mengurangi waktu response API.
+
+### 📌 Hasil Testing
+
+* First call: ±2 detik (tanpa cache)
+* Second call: ~0 detik (dari cache)
+
+### 📸 Hasil Eksekusi
+
+![Cache Report](screenshots/cache_report.png)
+
+### 🧠 Penjelasan
+
+* Request pertama mengambil data dari API (slow)
+* Request kedua mengambil data dari Redis (fast)
+* Cache disimpan selama 5 menit menggunakan `SETEX`
+
+---
+
 ## 🚀 Cara Menjalankan Project
 
-1. Clone repository:
+```bash
+docker-compose up -d
+python manage.py runserver
+```
 
-   ```bash
-   git clone <repo-url>
-   cd simple-lms
-   ```
+Akses API:
 
-2. Jalankan container:
+```
+http://127.0.0.1:8000/api/
+```
 
-   ```bash
-   docker-compose up -d
-   ```
+Swagger Docs:
 
-3. Jalankan server Django:
-
-   ```bash
-   python manage.py runserver
-   ```
-
-4. Akses API:
-
-   ```
-   http://127.0.0.1:8000/api/
-   ```
-
-5. Swagger Documentation:
-
-   ```
-   http://127.0.0.1:8000/api/docs/
-   ```
+```
+http://127.0.0.1:8000/api/docs/
+```
 
 ---
 
 ## 🧠 Arsitektur Teknologi
 
-* **Django REST Framework** → Backend API
-* **PostgreSQL** → Database utama
-* **Redis** → Caching & Rate Limiting
-* **MongoDB** → Activity Logging
-* **Docker** → Containerization
+* Django REST Framework → Backend API
+* PostgreSQL → Database utama
+* Redis → Caching & Rate Limiting
+* MongoDB → Activity Logging
+* Docker → Containerization
 
 ---
 
 ## 🏁 Kesimpulan
 
-Project ini mengimplementasikan sistem backend LMS modern dengan fitur:
+Project ini mengimplementasikan backend LMS modern dengan:
 
 * Optimasi performa (Redis caching)
-* Keamanan API (JWT & Rate Limiting)
-* Monitoring aktivitas (MongoDB logging)
+* Pembatasan request (Rate Limiting)
+* Monitoring aktivitas (MongoDB)
 
-Sehingga sistem lebih scalable, efisien, dan siap untuk pengembangan lebih lanjut.
+Sehingga sistem lebih cepat, efisien, dan scalable.
 
 ---
