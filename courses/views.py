@@ -2,6 +2,8 @@ from rest_framework import viewsets, permissions, status, filters
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from django_filters.rest_framework import DjangoFilterBackend
+from django.core.cache import cache
+
 from .models import Course, Enrollment, Progress, Lesson
 from .serializers import (
     CourseSerializer, UserSerializer, 
@@ -19,6 +21,7 @@ class IsInstructorOrReadOnly(permissions.BasePermission):
             return True
         return obj.instructor == request.user
 
+
 class CourseViewSet(viewsets.ModelViewSet):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
@@ -35,8 +38,58 @@ class CourseViewSet(viewsets.ModelViewSet):
             permission_classes = [IsInstructorOrReadOnly] 
         return [permission() for permission in permission_classes]
 
+    # =========================
+    # 🔥 CACHE: COURSE LIST
+    # =========================
+    def list(self, request, *args, **kwargs):
+        cache_key = "course_list"
+
+        data = cache.get(cache_key)
+        if data:
+            return Response(data)
+
+        queryset = self.filter_queryset(self.get_queryset())
+        serializer = self.get_serializer(queryset, many=True)
+
+        cache.set(cache_key, serializer.data, timeout=60*5)
+
+        return Response(serializer.data)
+
+    # =========================
+    # 🔥 CACHE: COURSE DETAIL
+    # =========================
+    def retrieve(self, request, *args, **kwargs):
+        course_id = kwargs.get("pk")
+        cache_key = f"course_{course_id}"
+
+        data = cache.get(cache_key)
+        if data:
+            return Response(data)
+
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+
+        cache.set(cache_key, serializer.data, timeout=60*5)
+
+        return Response(serializer.data)
+
+    # =========================
+    # 🔥 CACHE INVALIDATION
+    # =========================
     def perform_create(self, serializer):
-        serializer.save(instructor=self.user)
+        serializer.save(instructor=self.request.user)
+        cache.delete("course_list")
+
+    def perform_update(self, serializer):
+        instance = serializer.save()
+        cache.delete("course_list")
+        cache.delete(f"course_{instance.id}")
+
+    def perform_destroy(self, instance):
+        cache.delete("course_list")
+        cache.delete(f"course_{instance.id}")
+        instance.delete()
+
 
 class EnrollmentViewSet(viewsets.ModelViewSet):
     serializer_class = EnrollmentSerializer

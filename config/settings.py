@@ -45,7 +45,6 @@ SPECTACULAR_SETTINGS = {
     'DESCRIPTION': 'API untuk Sistem Manajemen Kursus',
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
-    # TAMBAHKAN INI:
     'COMPONENT_SPLIT_PATCH': True,
     'COMPONENT_SPLIT_REQUEST': True,
     'SECURITY': [
@@ -70,6 +69,12 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    # 🔥 REDIS RATE LIMIT
+    'courses.middleware.RateLimitMiddleware',
+
+    # 🔥 MONGODB ACTIVITY LOG
+    'courses.middleware_mongo.MongoActivityMiddleware',
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -98,6 +103,23 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+# 🔥 REDIS CACHE
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": env('REDIS_URL', default='redis://127.0.0.1:6379/1'),
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    }
+}
+
+CACHE_TTL = 60 * 5
+
+# 🔥 MONGODB CONFIG
+MONGO_URI = "mongodb://127.0.0.1:27017/"
+MONGO_DB_NAME = "lms_db"
 
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
