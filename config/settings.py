@@ -1,6 +1,7 @@
 import os
 from pathlib import Path
 import environ
+import dj_database_url
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -98,10 +99,12 @@ TEMPLATES = [
 WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    "default": dj_database_url.parse(
+        env(
+            "DATABASE_URL",
+            default="postgres://salsa:rahasia@db:5432/lms_db"
+        )
+    )
 }
 
 # 🔥 REDIS CACHE
@@ -118,8 +121,15 @@ CACHES = {
 CACHE_TTL = 60 * 5
 
 # 🔥 MONGODB CONFIG
-MONGO_URI = "mongodb://127.0.0.1:27017/"
-MONGO_DB_NAME = "lms_db"
+MONGO_URI = env(
+    "MONGO_URI",
+    default="mongodb://mongodb:27017/"
+)
+
+MONGO_DB_NAME = env(
+    "MONGO_DB_NAME",
+    default="lms_db"
+)
 
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
