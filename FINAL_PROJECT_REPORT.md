@@ -258,26 +258,41 @@ POST /api/enrollments/{id}/progress/
 
 # 9. Screenshot / Bukti Pengujian
 
-Seluruh hasil pengujian disimpan pada folder:
 
-```
-screenshot_pengujian/
-```
+![Swagger](screenshot_pengujian/swagger.png)
 
-Berisi:
 
-- swagger.png
-- docker_running.png
-- jwt_login.png
-- course_api_success.png
-- student_login.png
-- student_get_course.png
-- student_enrollment.png
-- student_progress.png
-- student_forbidden.png
-- postgresql_tables.png
-- redis_cache.png
-- mongodb_activity_logs.png
+![Docker](screenshot_pengujian/docker_running.png)
+
+
+![JWT Login](screenshot_pengujian/jwt_login.png)
+
+
+![Course API](screenshot_pengujian/course_api_success.png)
+
+
+![Student Login](screenshot_pengujian/student_login.png)
+
+
+![Student Get Course](screenshot_pengujian/student_get_course.png)
+
+
+![Enrollment](screenshot_pengujian/student_enrollment.png)
+
+
+![Progress](screenshot_pengujian/student_progress.png)
+
+
+![Forbidden](screenshot_pengujian/student_forbidden.png)
+
+
+![PostgreSQL](screenshot_pengujian/postgresql_tables.png)
+
+
+![Redis](screenshot_pengujian/redis_cache.png)
+
+
+![MongoDB](screenshot_pengujian/mongodb_activity_logs.png)
 
 ---
 
